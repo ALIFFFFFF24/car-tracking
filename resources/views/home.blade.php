@@ -13,7 +13,12 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                        @can('master-list')
+                        {{-- konten admin --}}
+                        @endcan
+                        @can('sopir-list')
+                        {{-- konten sopir --}}
+                        @endcan
                     {{ __('Welcome User!') }}
                 </div>
             </div>
