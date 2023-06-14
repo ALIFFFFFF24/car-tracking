@@ -18,13 +18,14 @@
             <p>{{ $message }}</p>
         </div>
     @endif
+    @can('master-list')
     <table class="table table-bordered">
         <tr>
             <th>No</th>
             <th>Delivery Order Id</th>
-            <th>Kendaraan</th>
-            <th>Sopir</th>
-            <th>Tujuan</th>
+            <th>Vehicle</th>
+            <th>Driver</th>
+            <th>Destination</th>
             <th>Status</th>
             <th width="280px">Action</th>
         </tr>
@@ -37,31 +38,54 @@
          <td>{{ $delivery->tujuan }}</td>
          <td>{{ $delivery->status }}</td>
          <td>
-            @can('master-list')
-                <form action="{{ route('deliveries.destroy',$delivery->id) }}" method="POST">
-                    {{-- <a class="btn btn-info" href="{{ route('deliveries.show',$delivery->id) }}">Show</a> --}}
-                    @can('master-edit')
-                    <a class="btn btn-primary" href="{{ route('deliveries.edit',$delivery->id) }}">Edit</a>
-                    @endcan
-                    @csrf
-                    @method('DELETE')
-                    @can('master-delete')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                    @endcan
-                </form>
-                @endcan  
-                @can('sopir-list')
-                    @php
-                    $app = ($delivery->status == "Pending") ? '' : 'hidden';
-                    @endphp
-                    <a {{$app}} href="{{ route('deliveries.approval', $delivery->id) }}" class="btn btn-outline-success">Approve</a>
-                    @php
-                    $track = ($delivery->status == "Approved") ? '' : 'hidden';
-                    @endphp
-                     <a {{$track}} href="{{ route('trackings.show', $delivery->id_tujuan) }}" class="btn btn-danger">Track Delivery</a>
-                    @endcan
+            <form action="{{ route('deliveries.destroy',$delivery->id) }}" method="POST">
+                {{-- <a class="btn btn-info" href="{{ route('deliveries.show',$delivery->id) }}">Show</a> --}}
+                @can('master-edit')
+                <a class="btn btn-primary" href="{{ route('deliveries.edit',$delivery->id) }}">Edit</a>
+                @endcan
+                @csrf
+                @method('DELETE')
+                @can('master-delete')
+                <button type="submit" class="btn btn-danger">Delete</button>
+                @endcan
+            </form> 
          </td>
      </tr>
      @endforeach
     </table>
+    @endcan
+
+    @can('sopir-list')
+    <table class="table table-bordered">
+        <tr>
+            <th>No</th>
+            <th>Delivery Order Id</th>
+            <th>Vehicle</th>
+            <th>Driver</th>
+            <th>Destination</th>
+            <th>Status</th>
+            <th width="280px">Action</th>
+        </tr>
+     @foreach ($drivers as $driver)
+     <tr>
+         <td>{{ ++$i }}</td>
+         <td>{{ $driver->id }}</td>
+         <td>{{ $driver->kendaraan }}</td>
+         <td>{{ $driver->sopir }}</td>
+         <td>{{ $driver->tujuan }}</td>
+         <td>{{ $driver->status }}</td>
+         <td>
+            @php
+            $app = ($driver->status == "Pending") ? '' : 'hidden';
+            @endphp
+            <a {{$app}} href="{{ route('deliveries.approval', $driver->id) }}" class="btn btn-outline-success">Approve</a>
+            @php
+            $track = ($driver->status == "Approved") ? '' : 'hidden';
+            @endphp
+             <a {{$track}} href="{{ route('trackings.show', $driver->id_tujuan) }}" class="btn btn-danger">Track Delivery</a>
+        </td>
+     </tr>
+     @endforeach
+    </table>
+    @endcan
 @endsection

@@ -6,9 +6,6 @@
             <div class="pull-left">
                 <h2>Add New Delivery Order</h2>
             </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('deliveries.index') }}">Back</a>
-            </div>
         </div>
     </div>
     @if ($errors->any())
@@ -93,9 +90,10 @@
             <input class="form-control w-50" type="text" name="status" class="form-control"  placeholder="Pending" disabled>
         </div>
     </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-              <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-end">
+        <a class="btn btn-danger" href="{{ route('deliveries.index') }}"> Back</a>
+          <button type="submit" class="btn btn-success">Submit</button>
+  </div>
   </div>
     </form>
 @endsection

@@ -42,9 +42,10 @@
             <input class="form-control" type="text" name="nama_kendaraan" class="form-control"  placeholder="Vehicle Name">
         </div>
     </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-              <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-end">
+        <a class="btn btn-danger" href="{{ route('vehicles.index') }}">Back</a>
+          <button type="submit" class="btn btn-success">Submit</button>
+  </div>
   </div>
     </form>
 @endsection

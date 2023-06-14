@@ -19,7 +19,6 @@
                         @can('sopir-list')
                         {{-- konten sopir --}}
                         @endcan
-                    {{ __('Welcome User!') }}
                 </div>
             </div>
         </div>

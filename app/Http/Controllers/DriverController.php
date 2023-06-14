@@ -50,12 +50,10 @@ class DriverController extends Controller
             'user_id' => ['required', 'unique:drivers'],
             'no_telp' => 'required',
         ]);
-    
-        $driver = DB::table('users')->select('name')->where('id', $request->id_user)->get();
+        $driver = DB::table('users')->select('name')->where('id', $request->user_id)->get();
         foreach ($driver as $d) {
             $namaDriver = $d->name;
         };
-
         Driver::create(
             [
                 'user_id' => $request->user_id,

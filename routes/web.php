@@ -37,5 +37,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('drivers', DriverController::class);
     Route::resource('deliveries', DeliveryController::class);
     Route::resource('checkpoints', CheckpointController::class);
-    Route::get('/deliveries/approval/{id}', [DeliveryController::class, 'approval'])->name('deliveries.approval');});
+    Route::get('/deliveries/approval/{id}', [DeliveryController::class, 'approval'])->name('deliveries.approval');
     Route::resource('trackings', TrackingController::class);
+    Route::get('/trackings/saveOrUpdateData/{id}', [TrackingController::class, 'saveOrUpdateData'])->name('trackings.saveOrUpdateData');
+});
+

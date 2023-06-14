@@ -45,7 +45,7 @@ class CheckpointController extends Controller
     public function store(Request $request): RedirectResponse
     {
         request()->validate([
-            'tujuan' => 'required',
+            'tujuan' => ['required', 'unique:checkpoints'],
         ]);
     
         Checkpoint::create($request->all());
@@ -95,12 +95,7 @@ class CheckpointController extends Controller
                         ->with('success','Checkpoints updated successfully');
     }
     
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Checkpoint $checkpoint): RedirectResponse
     {
         $checkpoint->delete();

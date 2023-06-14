@@ -6,9 +6,6 @@
         <div class="pull-left">
             <h2>Create New User</h2>
         </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
-        </div>
     </div>
 </div>
 @if (count($errors) > 0)
@@ -53,9 +50,10 @@
             {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-end">
+        <a class="btn btn-danger" href="{{ route('users.index') }}"> Back</a>
+          <button type="submit" class="btn btn-success">Submit</button>
+  </div>
 </div>
 {!! Form::close() !!}
 @endsection

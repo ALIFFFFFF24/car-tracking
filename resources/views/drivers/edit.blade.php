@@ -6,9 +6,6 @@
             <div class="pull-left">
                 <h2>Edit Driver</h2>
             </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('drivers.index') }}"> Back</a>
-            </div>
         </div>
     </div>
     @if ($errors->any())
@@ -31,9 +28,10 @@
             <input type="text" name="no_telp" value="{{ $driver->no_telp }}" class="form-control" placeholder="Phone Number">
         </div>
     </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-end">
+        <a class="btn btn-danger" href="{{ route('drivers.index') }}">Back</a>
+          <button type="submit" class="btn btn-success">Submit</button>
+  </div>
   </div>
     </form>
 @endsection
