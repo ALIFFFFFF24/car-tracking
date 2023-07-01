@@ -15,6 +15,6 @@ class vehicle extends Model
      * @var array
      */
     protected $fillable = [
-        'nopol', 'warna_kendaraan', 'nama_kendaraan'
+        'id', 'nopol', 'warna_kendaraan', 'nama_kendaraan'
     ];
 }

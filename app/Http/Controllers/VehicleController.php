@@ -5,7 +5,7 @@ use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-    
+use Illuminate\Support\Facades\DB;
 class VehicleController extends Controller
 { 
     /**
@@ -21,9 +21,10 @@ class VehicleController extends Controller
      */
     public function index(): View
     {
-        $vehicles = Vehicle::latest()->paginate(5);
-        return view('vehicles.index',compact('vehicles'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        $vehicles = DB::table('vehicles')
+        ->latest()
+        ->get();
+        return view('vehicles.index',compact('vehicles'));
     }
     
     /**
@@ -49,8 +50,21 @@ class VehicleController extends Controller
             'warna_kendaraan' => 'required',
             'nama_kendaraan' => ['required', 'unique:vehicles'],
         ]);
-    
-        Vehicle::create($request->all());
+    // Get the last order id
+$lastVehicleId = Vehicle::orderBy('id', 'desc')->first()->id ?? 0;
+
+// Get last 3 digits of last order id
+$lastIncreament = substr($lastVehicleId, -3);
+
+// Make a new order id with appending last increment + 1
+$newOrderId = 'VHC' . date('Ymd') . str_pad($lastIncreament + 1, 3, 0, STR_PAD_LEFT);
+        Vehicle::create([
+            'id' => $newOrderId,
+            'nopol' => $request->nopol,
+            'warna_kendaraan' => $request->warna_kendaraan,
+            'nama_kendaraan' => $request->nama_kendaraan,
+            'created_at' => now()
+        ]);
     
         return redirect()->route('vehicles.index')
                         ->with('success','Vehicle created successfully.');
@@ -73,8 +87,12 @@ class VehicleController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vehicle $vehicle): View
+    public function edit(string $id): View
     {
+
+        $vehicle = DB::table('vehicles')
+        ->where('id', '=', $id)
+        ->first();
         return view('vehicles.edit',compact('vehicle'));
     }
     

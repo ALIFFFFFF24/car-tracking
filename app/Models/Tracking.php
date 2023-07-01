@@ -15,6 +15,7 @@ class Tracking extends Model
      * @var array
      */
     protected $fillable = [
+        'id_delivery',
         'id_tujuan',
         'checkpoint1',
         'tanggal1',

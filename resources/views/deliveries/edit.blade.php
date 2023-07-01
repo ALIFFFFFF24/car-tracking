@@ -79,7 +79,13 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Destination :</strong>
-            <input class="form-control w-50" type="text" name="tujuan" class="form-control"  placeholder="Status" value="{{$delivery->tujuan}}">
+            <select class="form-control main w-50" name="id_tujuan">
+                <option selected>-- Choose Destination --</option>
+                @foreach ($checkpoints as $c)
+                @php $sel = ($c->id == $delivery->id_tujuan) ? 'selected' : ''; @endphp
+                        <option {{$sel}} value="{{$c->id}}">{{$c->tujuan}}</option>
+                        @endforeach
+            </select>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">

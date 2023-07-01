@@ -18,17 +18,21 @@
             <p>{{ $message }}</p>
         </div>
     @endif
+    
     <table class="table table-bordered">
         <tr>
             <th>No</th>
+            <th>Vehicle Id</th>
             <th>Vehicle Registration Number</th>
             <th>Vehicle Color</th>
             <th>Vehicle name</th>
             <th width="280px">Action</th>
         </tr>
+        @php $i = 0; @endphp
      @foreach ($vehicles as $vehicle)
      <tr>
          <td>{{ ++$i }}</td>
+         <td>{{ $vehicle->id }}</td>
          <td>{{ $vehicle->nopol }}</td>
          <td>{{ $vehicle->warna_kendaraan }}</td>
          <td>{{ $vehicle->nama_kendaraan }}</td>
@@ -48,5 +52,4 @@
      </tr>
      @endforeach
     </table>
-    {!! $vehicles->links() !!}
 @endsection

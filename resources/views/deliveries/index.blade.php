@@ -29,6 +29,7 @@
             <th>Status</th>
             <th width="280px">Action</th>
         </tr>
+        @php $i = 0; @endphp
      @foreach ($deliveries as $delivery)
      <tr>
          <td>{{ ++$i }}</td>
@@ -39,7 +40,10 @@
          <td>{{ $delivery->status }}</td>
          <td>
             <form action="{{ route('deliveries.destroy',$delivery->id) }}" method="POST">
-                {{-- <a class="btn btn-info" href="{{ route('deliveries.show',$delivery->id) }}">Show</a> --}}
+                @php
+            $app = ($delivery->status == "Pending") ? 'hidden' : '';
+            @endphp
+                <a {{$app}} class="btn btn-info" href="{{ route('deliveries.show',$delivery->id) }}">Track Delivery</a>
                 @can('master-edit')
                 <a class="btn btn-primary" href="{{ route('deliveries.edit',$delivery->id) }}">Edit</a>
                 @endcan
@@ -66,9 +70,10 @@
             <th>Status</th>
             <th width="280px">Action</th>
         </tr>
+        @php $i = 0; @endphp
      @foreach ($drivers as $driver)
      <tr>
-         <td>{{ ++$i }}</td>
+         <td>{{ $i++ }}</td>
          <td>{{ $driver->id }}</td>
          <td>{{ $driver->kendaraan }}</td>
          <td>{{ $driver->sopir }}</td>
@@ -78,11 +83,11 @@
             @php
             $app = ($driver->status == "Pending") ? '' : 'hidden';
             @endphp
-            <a {{$app}} href="{{ route('deliveries.approval', $driver->id) }}" class="btn btn-outline-success">Approve</a>
+            <a {{$app}} href="{{ route('deliveries.approval', $driver->id) }}" class="btn btn-outline-success">Deliver</a>
             @php
-            $track = ($driver->status == "Approved") ? '' : 'hidden';
+            $track = ($driver->status == "On Delivery") ? '' : 'hidden';
             @endphp
-             <a {{$track}} href="{{ route('trackings.show', $driver->id_tujuan) }}" class="btn btn-danger">Track Delivery</a>
+             <a {{$track}} href="{{ route('trackings.show', $driver->id) }}" class="btn btn-danger">Track Delivery</a>
         </td>
      </tr>
      @endforeach

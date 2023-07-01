@@ -26,6 +26,7 @@
             <th>Phone Number</th>
             <th width="280px">Action</th>
         </tr>
+    @php $i = 0; @endphp
      @foreach ($drivers as $driver)
      <tr>
          <td>{{ ++$i }}</td>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Checkpoint;
 use App\Models\Delivery;
 use App\Models\Driver;
+use App\Models\Tracking;
 use App\Models\vehicle;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -41,8 +42,7 @@ class DeliveryController extends Controller
         ->select('deliveries.*', 'drivers.nama_sopir as sopir', 'vehicles.nama_kendaraan as kendaraan', 'checkpoints.tujuan as tujuan')
         ->latest()
         ->get();
-        return view('deliveries.index',compact('deliveries','drivers'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('deliveries.index',compact('deliveries','drivers'));
     }
     
     /**
@@ -103,9 +103,33 @@ class DeliveryController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Driver $driver): View
+    public function show(Delivery $delivery): View
     {
-        return view('drivers.show',compact('driver'));
+        $id_tujuan = DB::table('deliveries')
+        ->select('deliveries.id_tujuan')
+        ->where('deliveries.id','=',$delivery->id)
+        ->first();
+        $data= json_decode( json_encode($id_tujuan), true);
+        $checkpoints = DB::table('checkpoints')
+            ->select('checkpoints.*')
+            ->where('checkpoints.id', '=', $data)
+            ->first();
+        $delivery = DB::table('deliveries')
+        ->join('checkpoints', 'checkpoints.id', '=', 'deliveries.id_tujuan')
+        ->select('deliveries.*','checkpoints.tujuan as tujuan')
+        ->where('deliveries.id','=',$delivery->id)
+        ->first();
+        $trackings = DB::table('trackings')
+        ->select('trackings.*')
+        ->where('trackings.id_delivery','=',$delivery->id)
+        ->first();
+        return view('deliveries.show')->with(
+            [
+                'checkpoints' => $checkpoints,
+                'delivery' => $delivery,
+                'trackings' => $trackings,
+            ]
+        );
     }
     
     /**
@@ -119,7 +143,8 @@ class DeliveryController extends Controller
         
         $drivers = Driver::all();
         $vehicles = vehicle::all();
-        return view('deliveries.edit',compact('delivery','drivers','vehicles'));
+        $checkpoints = Checkpoint::all();
+        return view('deliveries.edit',compact('delivery','drivers','vehicles','checkpoints'));
     }
     
     /**
@@ -139,7 +164,7 @@ class DeliveryController extends Controller
             'jenis_barang' => 'required',
             'tgl' => 'required',
             'jml_barang' => 'required',
-            'tujuan' => 'required',
+            'id_tujuan' => 'required',
             'status' => 'required',
         ]);
     
@@ -166,11 +191,41 @@ class DeliveryController extends Controller
     public function approval($id)
     {
         $deliveries = Delivery::find($id);
+        $data= json_decode( json_encode($id), true);
+        $trackings = Tracking::create(
+            [
+                'id_delivery' => $data,
+                'id_tujuan' => null,
+                'checkpoint1' => null,
+                'tanggal1' => null,
+                'checkpoint2' => null,
+                'tanggal2' => null,
+                'checkpoint3' => null,
+                'tanggal3' => null,
+                'checkpoint4' => null,
+                'tanggal4' => null,
+                'checkpoint5' => null,
+                'tanggal5' => null,
+                'created_at' => now()
+            ]
+        );
         if ($deliveries->status == 'Pending') {
-            $deliveries->status = 'Approved';
+            $deliveries->status = 'On Delivery';
             $deliveries->save();
+            $trackings->save();
         } 
         return redirect()->back();
+    }
+
+    public function finish($id)
+    {
+        $deliveries = Delivery::find($id);
+        if ($deliveries->status == 'On Delivery') {
+            $deliveries->status = 'Delivered';
+            $deliveries->save();
+        } 
+        return redirect()->route('deliveries.index')
+                        ->with('success','Deliveries updated successfully');
     }
 
     

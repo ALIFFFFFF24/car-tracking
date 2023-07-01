@@ -30,6 +30,7 @@
             <th>Checkpoint 5</th>
             <th width="280px">Action</th>
         </tr>
+    @php $i = 0; @endphp
      @foreach ($checkpoints as $checkpoint)
      <tr>
          <td>{{ ++$i }}</td>
@@ -56,5 +57,4 @@
      </tr>
      @endforeach
     </table>
-    {!! $checkpoints->links() !!}
 @endsection

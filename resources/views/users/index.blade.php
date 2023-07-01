@@ -24,6 +24,7 @@
    <th>Roles</th>
    <th width="280px">Action</th>
  </tr>
+ @php $i = 0; @endphp
  @foreach ($data as $key => $user)
   <tr>
     <td>{{ ++$i }}</td>
@@ -46,5 +47,4 @@
   </tr>
  @endforeach
 </table>
-{!! $data->render() !!}
 @endsection

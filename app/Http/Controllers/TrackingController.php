@@ -11,61 +11,50 @@ use Illuminate\Support\Facades\DB;
 class TrackingController extends Controller
 
 {
-    public function show($id_tujuan)
+    public function show($id)
     {
-        $delivery = DB::table('deliveries')->where('deliveries.id_tujuan', '=', $id_tujuan)->first();
-        $track = DB::table('trackings')->where('trackings.id_tujuan', '=', $id_tujuan)->first();
-        $trackings = Checkpoint::find($id_tujuan)
-            ->where('checkpoints.id', '=', $id_tujuan)
+        $id_tujuan = DB::table('deliveries')
+        ->select('deliveries.id_tujuan')
+        ->where('deliveries.id','=',$id)
+        ->first();
+        $data= json_decode( json_encode($id_tujuan), true);
+        $checkpoints = DB::table('checkpoints')
+            ->select('checkpoints.*')
+            ->where('checkpoints.id', '=', $data)
             ->first();
+        $delivery = DB::table('deliveries')
+        ->join('checkpoints', 'checkpoints.id', '=', 'deliveries.id_tujuan')
+        ->select('deliveries.*','checkpoints.tujuan as tujuan')
+        ->where('deliveries.id','=',$id)
+        ->first();
+        $trackings = DB::table('trackings')
+        ->select('trackings.*')
+        ->where('trackings.id_delivery','=',$id)
+        ->first();
         return view('trackings.index')->with(
             [
-                'trackings' => $trackings,
+                'checkpoints' => $checkpoints,
                 'delivery' => $delivery,
-                'track' => $track,
+                'trackings' => $trackings,
             ]
         );
-    }
-
-    public function store(Request $request, Tracking $trackings): RedirectResponse
-    { 
-            Tracking::UpdateorCreate(
-            ['id'=>$trackings],
-            [
-            'id_tujuan' => $request->id_tujuan,
-            'checkpoint1' => $request->checkpoint1,
-            'tanggal1' => $request->tanggal1,
-            'checkpoint2' => $request->checkpoint2,
-            'tanggal2' => $request->tanggal2,
-            'checkpoint3' => $request->checkpoint3,
-            'tanggal3' => $request->tanggal3,
-            'checkpoint4' => $request->checkpoint4,
-            'tanggal4' => $request->tanggal4,
-            'checkpoint5' => $request->checkpoint5,
-            'tanggal5' => $request->tanggal5,
-        ]);
-    
-        return redirect()->route('deliveries.index')
-                        ->with('success','Trackings updated successfully');
     }
 
     public function saveOrUpdateData(Request $request)
 {
     $data = $request->all(); // Mengambil semua data dari request
-
-    $existingData = Tracking::where('key', $data['key'])->first(); // Mengambil data yang sudah ada berdasarkan kunci (key)
+    $existingData = Tracking::where('id', $data['id'])->first(); // Mengambil data yang sudah ada berdasarkan kunci (key)
 
     if ($existingData) {
         // Jika data sudah ada, lakukan pembaruan
         $existingData->update($data);
-        $message = 'Data berhasil diperbarui.';
     } else {
         // Jika data belum ada, buat data baru
         Tracking::create($data);
-        $message = 'Data berhasil disimpan.';
     }
 
-    return response()->json(['message' => $message], 200);
+    return redirect()->route('deliveries.index')
+                        ->with('success','Trackings update successfully');
 }
 
 }

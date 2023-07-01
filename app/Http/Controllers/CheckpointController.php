@@ -21,9 +21,8 @@ class CheckpointController extends Controller
      */
     public function index(): View
     {
-        $checkpoints = Checkpoint::latest()->paginate(5);
-        return view('checkpoints.index',compact('checkpoints'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        $checkpoints = Checkpoint::latest()->get();
+        return view('checkpoints.index',compact('checkpoints'));
     }
     
     /**

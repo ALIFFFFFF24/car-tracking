@@ -22,7 +22,7 @@
      @csrf
          <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
+                <div class="form-group py-3">
                     <strong>Vehicle :</strong>
                     <select class="form-control main w-50" name="id_kendaraan">
                       <option selected>-- Choose Vehicles --</option>
@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
+                <div class="form-group py-3">
                     <strong>Driver :</strong>
                     <select class="form-control main w-50" name="id_sopir">
                       <option selected>-- Choose Driver --</option>
@@ -44,37 +44,37 @@
                 </div>
             </div>
       <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
+        <div class="form-group py-3">
             <strong>Condition :</strong>
             <input class="form-control w-50" type="text" name="kondisi" class="form-control"  placeholder="Condition">
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
+        <div class="form-group py-3">
             <strong>Item Weight :</strong>
             <input class="form-control w-50" type="number" name="berat_barang" class="form-control">
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
+        <div class="form-group py-3">
             <strong>Item Categories :</strong>
             <input class="form-control w-50" type="text" name="jenis_barang" class="form-control"  placeholder="Item Categories">
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
+        <div class="form-group py-3">
             <strong>Date :</strong>
             <input class="form-control w-50" type="date" name="tgl" class="form-control">
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
+        <div class="form-group py-3">
             <strong>Item Amount :</strong>
             <input class="form-control w-50" type="number" name="jml_barang" class="form-control">
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
+        <div class="form-group py-3">
             <strong>Destination :</strong>
             <select class="form-control main w-50" name="id_tujuan">
                 <option selected>-- Choose Destination --</option>
@@ -82,12 +82,6 @@
                         <option value="{{$c->id}}">{{$c->tujuan}}</option>
                         @endforeach
             </select>
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Status :</strong>
-            <input class="form-control w-50" type="text" name="status" class="form-control"  placeholder="Pending" disabled>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-end">
